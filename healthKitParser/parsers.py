@@ -14,7 +14,7 @@ def datetime_from_string(date_string):
         print("Got exception parsing date {} with format {} {}"
             .format(date_string, date_format, e))
 
-def parse_weight(file_name):
+def parse_records(file_name, record_type):
     """Parses the xml file for weight data"""
 
     tree = ET.parse(file_name)
@@ -24,7 +24,7 @@ def parse_weight(file_name):
 
     for entry in root.findall('Record'):
         type = entry.get('type')
-        if type == record_types['weight']:
+        if type == record_type:
             value = entry.get('value')
             unit = entry.get('unit')
             source = entry.get('sourceName')

@@ -4,7 +4,8 @@ from record import Record
 
 def main(file_name):
     print("Parsing {} for weight data".format(file_name))
-    weight_records = parsers.parse_weight(file_name)
+    weight_records = parsers.parse_records(
+        file_name, parsers.record_types['weight'])
 
     for record in weight_records:
         print("{},{}".format(record.start_date, record.value))
