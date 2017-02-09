@@ -27,7 +27,7 @@ def parse_records(file_name, record_type):
     for entry in root.findall('Record'):
         type = entry.get('type')
         if type == record_type:
-            value = entry.get('value')
+            value = float(entry.get('value'))
             unit = entry.get('unit')
             source = entry.get('sourceName')
             creation_date = datetime_from_string(entry.get('creationDate'))
