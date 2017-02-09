@@ -2,7 +2,9 @@ import xml.etree.ElementTree as ET
 import datetime
 from record import Record
 
-record_types = {'weight': 'HKQuantityTypeIdentifierBodyMass'}
+record_types = {'weight': 'HKQuantityTypeIdentifierBodyMass',
+                'heart rate': 'HKQuantityTypeIdentifierHeartRate',
+                'steps': 'HKQuantityTypeIdentifierStepCount'}
 
 date_format = "%Y-%m-%d %H:%M:%S %z"
 
