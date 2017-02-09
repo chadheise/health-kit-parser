@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import datetime
+from record import Record
 
 record_types = {'weight': 'HKQuantityTypeIdentifierBodyMass'}
 
@@ -15,31 +16,25 @@ def datetime_from_string(date_string):
 
 def parse_weight(file_name):
     """Parses the xml file for weight data"""
-    print("Parsing {} for weight data".format(file_name))
-    
+
     tree = ET.parse(file_name)
     root = tree.getroot()   
 
-    data = {}
-    keys = []
+    records = []
 
     for entry in root.findall('Record'):
-        record_type = entry.get('type')
-        if record_type == record_types['weight']:
-            # unit = entry.get('unit')
+        type = entry.get('type')
+        if type == record_types['weight']:
             value = entry.get('value')
-            creation_date = entry.get('startDate')
-            date = datetime_from_string(creation_date)
+            unit = entry.get('unit')
+            source = entry.get('sourceName')
+            creation_date = datetime_from_string(entry.get('creationDate'))
+            start_date = datetime_from_string(entry.get('startDate'))
+            end_date = datetime_from_string(entry.get('endDate'))
+            
+            record = Record(
+                type, value, unit, source, creation_date, start_date, end_date)
 
-            data[date] = value # TODO: This will overwrite duplicate entries
-            keys.append(date)
+            records.append(record)
 
-    keys.sort()
-
-    for date in keys:        
-        # TODO: Print in this timezone
-        print("{},{}".format(date.strftime("%m/%d/%Y"), data[date]))
-
-    return data # TODO: Consider a custom data type
-
-
+    return sorted(records, key=lambda record: record.start_date)
