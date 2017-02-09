@@ -1,13 +1,8 @@
 import sys
-import xml.etree.ElementTree as ET
-import datetime
-import re
-import parsers.weightparser
-# from parsers import weightparser
+import parsers
 
 def main(file_name):
-    p = parsers.weightparser.WeightParser(file_name)
-    p.parse()
+    p = parsers.parse_weight(file_name)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
