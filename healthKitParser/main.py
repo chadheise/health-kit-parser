@@ -4,6 +4,7 @@ from record import Record
 import matplotlib.pyplot as plt
 import numpy
 import pylab
+import datetime
 
 def main(file_name):
     print("Parsing {} for weight data".format(file_name))
@@ -15,6 +16,13 @@ def main(file_name):
 
     datetimes = [record.start_date for record in weight_records]
     weights = [record.value for record in weight_records]
+
+    # Filter times by start date
+    timezone = datetime.timezone(datetime.timedelta(hours=-8))
+    start = datetime.datetime(2017, 1, 1, tzinfo=timezone)
+    start_index = getStartIndex(datetimes, start)
+    datetimes = datetimes[start_index:]
+    weights = weights[start_index:]
 
     plt.plot(datetimes, weights, 'b.')
     plt.ylabel('Weight (lbs)')
@@ -28,6 +36,16 @@ def main(file_name):
     pylab.plot(datetimes,p(ordinal_times),"b--")
 
     plt.show()
+
+# Assumes a sorted list
+def getStartIndex(datetimes, start_date=None):
+    if start_date == None:
+        return 0
+
+    for i in range(0, len(datetimes)):
+        if datetimes[i] > start_date:
+            return i - 1
+    return len(datetimes)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
