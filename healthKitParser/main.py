@@ -22,7 +22,6 @@ def main(file_name, start_date_string):
         timezone = datetime.timezone(datetime.timedelta(hours=-8))
         start = datetime.datetime.strptime(start_date_string, '%m/%d/%Y') \
             .replace(tzinfo=timezone)
-        # start = datetime.datetime(2017, 1, 1, tzinfo=timezone)
         start_index = getStartIndex(datetimes, start)
         datetimes = datetimes[start_index:]
         weights = weights[start_index:]
