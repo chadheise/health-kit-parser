@@ -6,7 +6,7 @@ import numpy
 import pylab
 import datetime
 
-def main(file_name):
+def main(file_name, start_date_string):
     print("Parsing {} for weight data".format(file_name))
     weight_records = parsers.parse_records(
         file_name, parsers.record_types['weight'])
@@ -17,12 +17,15 @@ def main(file_name):
     datetimes = [record.start_date for record in weight_records]
     weights = [record.value for record in weight_records]
 
-    # Filter times by start date
-    timezone = datetime.timezone(datetime.timedelta(hours=-8))
-    start = datetime.datetime(2017, 1, 1, tzinfo=timezone)
-    start_index = getStartIndex(datetimes, start)
-    datetimes = datetimes[start_index:]
-    weights = weights[start_index:]
+    if start_date_string:
+        # Filter times by start date
+        timezone = datetime.timezone(datetime.timedelta(hours=-8))
+        start = datetime.datetime.strptime(start_date_string, '%m/%d/%Y') \
+            .replace(tzinfo=timezone)
+        # start = datetime.datetime(2017, 1, 1, tzinfo=timezone)
+        start_index = getStartIndex(datetimes, start)
+        datetimes = datetimes[start_index:]
+        weights = weights[start_index:]
 
     plt.plot(datetimes, weights, 'b.')
     plt.ylabel('Weight (lbs)')
@@ -48,10 +51,15 @@ def getStartIndex(datetimes, start_date=None):
     return len(datetimes)
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Usage: python weightParser.py <export.xml file to parse>")
+    if len(sys.argv) != 2 and len(sys.argv) != 3:
+        print("Usage: python weightParser.py <export.xml file to parse> " + 
+             "<start date>")
         exit()
     file_name = sys.argv[1]
-    main(file_name)
+
+    start_date = None
+    if (len(sys.argv) > 2):
+        start_date = sys.argv[2]
+    main(file_name, start_date)
 
 
