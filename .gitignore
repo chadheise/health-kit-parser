@@ -1,2 +1,4 @@
 apple_health_export/*
+myData/*
+*.pyc
 __pycache__

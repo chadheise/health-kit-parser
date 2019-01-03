@@ -34,20 +34,6 @@ class MainGui(QMainWindow):
         self.help_menu.addAction('&About', self.about)
         self.menuBar().addSeparator()
         self.menuBar().addMenu(self.help_menu)
-
-    def initSelectionPanel(self):
-        
-        okButton = QPushButton("OK")
-        cancelButton = QPushButton("Cancel")
-
-        hbox = QHBoxLayout()
-        hbox.addStretch(1)
-        hbox.addWidget(okButton)
-        hbox.addWidget(cancelButton)
-
-        vbox = QVBoxLayout()
-        vbox.addStretch(1)
-        vbox.addLayout(hbox)
                 
     def fileQuit(self):
         self.close()
